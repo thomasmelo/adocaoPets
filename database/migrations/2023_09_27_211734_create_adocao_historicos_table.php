@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('adocao_historicos', function (Blueprint $table) {
-            $table->id();
+        Schema::create('adocao_historico', function (Blueprint $table) {
+            $table->increments('id_adocao_historico');
+            $table->integer('id_adocao');
+            $table->integer('id_user');
+            $table->text('historico');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -22,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('adocao_historicos');
+        Schema::dropIfExists('adocao_historico');
     }
 };

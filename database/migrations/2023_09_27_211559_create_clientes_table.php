@@ -12,8 +12,24 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('clientes', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id_cliente');
+            $table->string('nome',100);
+            $table->string('cpf',20)->nullable();
+            $table->integer('id_sexo')->default(1);
+            $table->date('nascimento')->nullable();
+            $table->char('ddd',3)->nullable();
+            $table->string('celular',15)->nullable();
+            $table->string('email',100)->nullable();
+            $table->string('cep',15)->nullable();
+            $table->string('endereco',100)->nullable();
+            $table->string('numero',45)->nullable();
+            $table->string('complemento',45)->nullable();
+            $table->string('bairro',100)->nullable();
+            $table->string('cidade',100)->nullable();
+            $table->string('uf',100)->nullable();
+            $table->text('observacao')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
