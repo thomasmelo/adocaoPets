@@ -19,7 +19,7 @@ class PetHistoricoFactory extends Factory
         return [
             'id_pet' => fake()->numberBetween(1, 150),
             'id_user' => fake()->numberBetween(1, 10),
-            'historico' => fake()->sentences(),
+            'historico' => fake()->word(),
         ];
     }
 }

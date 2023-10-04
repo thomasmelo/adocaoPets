@@ -19,7 +19,7 @@ class ClienteHistoricoFactory extends Factory
         return [
             'id_cliente' => fake()->numberBetween(1, 250),
             'id_user' => fake()->numberBetween(1, 10),
-            'historico' => fake()->sentences(),
+            'historico' => fake()->word(),
         ];
     }
 }

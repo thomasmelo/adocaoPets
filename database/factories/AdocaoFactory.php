@@ -21,7 +21,7 @@ class AdocaoFactory extends Factory
             'id_pet' => fake()->numberBetween(1, 150),
             'id_cliente' => fake()->numberBetween(1, 250),
             'dt_inicio' => fake()->dateTimeBetween('-10 week', now()),
-            'descricao' => fake()->sentences(),
+            'descricao' => fake()->word(),
         ];
     }
 }

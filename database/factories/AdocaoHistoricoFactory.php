@@ -19,7 +19,7 @@ class AdocaoHistoricoFactory extends Factory
         return [
             'id_adocao' => fake()->numberBetween(1, 50),
             'id_user' => fake()->numberBetween(1, 10),
-            'historico' => fake()->sentences(),
+            'historico' => fake()->word(),
         ];
     }
 }
