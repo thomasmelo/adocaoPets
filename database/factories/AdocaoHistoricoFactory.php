@@ -17,7 +17,9 @@ class AdocaoHistoricoFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'id_adocao' => fake()->numberBetween(1, 50),
+            'id_user' => fake()->numberBetween(1, 10),
+            'historico' => fake()->sentences(),
         ];
     }
 }

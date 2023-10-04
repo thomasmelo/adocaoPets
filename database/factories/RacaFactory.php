@@ -17,7 +17,8 @@ class RacaFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'id_especie' => fake()->numberBetween(1, 4),
+            'raca' => fake()->word(),
         ];
     }
 }

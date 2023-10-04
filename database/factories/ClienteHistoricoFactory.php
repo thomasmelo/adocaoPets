@@ -17,7 +17,9 @@ class ClienteHistoricoFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'id_cliente' => fake()->numberBetween(1, 250),
+            'id_user' => fake()->numberBetween(1, 10),
+            'historico' => fake()->sentences(),
         ];
     }
 }
