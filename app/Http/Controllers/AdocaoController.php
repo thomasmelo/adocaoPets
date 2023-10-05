@@ -1,9 +1,28 @@
 <?php
 
+/**
+ * 04-10-2023
+ * @author Thomas Melo
+ *
+ */
+
 namespace App\Http\Controllers;
 
-use App\Models\Adocao;
 use Illuminate\Http\Request;
+use App\Models\{
+    Adocao,
+    AdocaoHistorico,
+    Cliente,
+    ClienteHistorico,
+    Especie,
+    Pet,
+    PetHistorico,
+    Raca,
+    Sexo,
+    Status
+};
+
+
 
 class AdocaoController extends Controller
 {
@@ -12,7 +31,10 @@ class AdocaoController extends Controller
      */
     public function index()
     {
-        //
+        $adocoes = Adocao::orderBy('id_adocao', 'asc')->paginate('20');
+        $status = Status::class;
+        return view('adocao.index')
+            ->with(compact('adocoes', 'status'));
     }
 
     /**
@@ -20,7 +42,12 @@ class AdocaoController extends Controller
      */
     public function create()
     {
-        //
+        $adocao = null;
+        $status = Status::class;
+        $pets = Pet::orderBy('nome')->get();
+        $clientes = Cliente::orderBy('nome');
+        return view('adocao.form')
+            ->with(compact('adocao', 'status', 'pets', 'clientes'));
     }
 
     /**
@@ -34,17 +61,23 @@ class AdocaoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Adocao $adocao)
+    public function show(int $id)
     {
-        //
+        $adocao = Adocao::find($id);
+        return view('adocao.show')->with(compact('adocao'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Adocao $adocao)
+    public function edit(int $id)
     {
-        //
+        $adocao = Adocao::find($id);
+        $status = Status::class;
+        $pets = Pet::orderBy('nome')->get();
+        $clientes = Cliente::orderBy('nome');
+        return view('adocao.form')
+        ->with(compact('adocao', 'status', 'pets', 'clientes'));
     }
 
     /**
@@ -62,4 +95,10 @@ class AdocaoController extends Controller
     {
         //
     }
+
+    /**
+     * 04-10-2023
+     * @author Thomas Melo
+     *
+     */
 }

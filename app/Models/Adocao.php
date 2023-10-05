@@ -91,6 +91,15 @@ class Adocao extends Model
         );
     }
 
+    public function historico()
+    {
+        return $this->belongsTo(
+            AdocaoHistorico::class,
+            'id_adocao',
+            'id_adocao'
+        );
+    }
+
 
     /**
      * ---------------------------------------------------

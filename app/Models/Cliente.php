@@ -106,6 +106,8 @@ class Cliente extends Model
      * -------------------------------
      */
 
+
+
     /**
      * 28-09-2023
      * @author Thomas Melo
