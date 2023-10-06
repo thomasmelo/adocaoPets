@@ -23,7 +23,6 @@
                 <th>#</th>
                 <th>Especie</th>
                 <th>Total de raças</th>
-                <th>Total de pets</th>
             </tr>
         </thead>
         <tbody class="table-group-divider">
@@ -50,7 +49,6 @@
                 </td>
                 <td>{{ $especie->especie }}</td>
                 <td>{{ $especie->racas()->count() }}</td>
-                <td>{{ $especie->racas->especie()->count() }}</td>
             </tr>
             @empty
             <tr>

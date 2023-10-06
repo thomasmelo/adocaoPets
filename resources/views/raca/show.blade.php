@@ -17,6 +17,7 @@
             <thead>
                 <tr>
                     <th>#</th>
+                    <th>#</th>
                     <th>Nome do pet</th>
                     <th>Descrição</th>
                     <th>Observação</th>
@@ -31,6 +32,7 @@
                             <i class="fa-regular fa-eye"></i>
                         </a>
                     </td>
+                    <td>{{ $loop->iteration }}</td>
                     <td>{{ $pet->nome }}</td>
                     <td>{!! $pet->descricao !!}</td>
                     <td>{!! $pet->observacao !!}</td>
