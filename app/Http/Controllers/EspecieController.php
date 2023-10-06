@@ -1,65 +1,86 @@
 <?php
 
+/**
+ * 05-10-2023
+ * @author Thomas Melo
+ *
+ */
+
 namespace App\Http\Controllers;
 
-use App\Models\Especie;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Models\{
+    Adocao,
+    AdocaoHistorico,
+    Cliente,
+    ClienteHistorico,
+    Especie,
+    Pet,
+    PetHistorico,
+    Raca,
+    Sexo,
+    Status
+};
 
 class EspecieController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $especies = Especie::orderBy('especie')->paginate('20');
+        return view('especie.index')
+            ->with(compact('especies'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
-        //
+        $especie = null;
+        return view('especie.form')->with(compact('especie'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
-        //
+        Especie::create($request->all());
+        return redirect()
+            ->route('especie.index')
+            ->with('success', 'Cadastrado com sucesso');
+    }
+
+
+    public function show(int $id)
+    {
+        $especie = Especie::find($id);
+        return view('especie.show')->with(compact('especie'));
+    }
+
+
+    public function edit(int $id)
+    {
+        $especie = Especie::find($id);
+        return view('especie.form')->with(compact('especie'));
+    }
+
+
+    public function update(Request $request, int $id)
+    {
+        $especie = Especie::find($id);
+        $especie->update($request->all());
+        return redirect()
+            ->route('especie.index')
+            ->with('info', 'Atualizado com sucesso');
+    }
+
+    public function destroy(string $id)
+    {
+        Especie::find($id)->delete();
+        return redirect()->back()->with('destroy', ' Excluído com sucesso!');
     }
 
     /**
-     * Display the specified resource.
+     * 05-10-2023
+     * @author Thomas Melo
+     *
      */
-    public function show(Especie $especie)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Especie $especie)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Especie $especie)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Especie $especie)
-    {
-        //
-    }
 }

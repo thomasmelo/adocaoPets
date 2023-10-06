@@ -1,65 +1,100 @@
 <?php
 
+/**
+ * 05-10-2023
+ * @author Thomas Melo
+ *
+ */
+
 namespace App\Http\Controllers;
 
-use App\Models\Cliente;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Models\{
+    Adocao,
+    AdocaoHistorico,
+    Cliente,
+    ClienteHistorico,
+    Especie,
+    Pet,
+    PetHistorico,
+    Raca,
+    Sexo,
+    Status
+};
 
 class ClienteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $clientes = Cliente::orderBy('id_cliente', 'asc')->paginate('20');
+        return view('cliente.index')
+            ->with(compact('clientes'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
-        //
+        $cliente = null;
+        $sexos = Sexo::class;
+        return view('cliente.form')
+            ->with(compact('cliente', 'sexos'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
-        //
+        $cliente = Cliente::create($request->all());
+        ClienteHistorico::create([
+            'id_user' => Auth::user()->id,
+            'id_cliente' => $cliente->id_cliente,
+            'historico' => 'Relizado cadastro no sistema'
+        ]);
+        return redirect()
+            ->route('cliente.show', ['id' => $cliente->id_cliente])
+            ->with('success', 'Cadastrado com sucesso');
+    }
+
+
+    public function show(int $id)
+    {
+        $cliente = Cliente::find($id);
+        return view('cliente.show')->with(compact('cliente'));
+    }
+
+
+    public function edit(int $id)
+    {
+        $cliente = Cliente::find($id);
+        $sexos = Sexo::class;
+        return view('cliente.form')
+            ->with(compact('cliente', 'sexos'));
+    }
+
+
+    public function update(Request $request, int $id)
+    {
+        $cliente = Cliente::find($id);
+        $cliente->update($request->all());
+        ClienteHistorico::create([
+            'id_user' => Auth::user()->id,
+            'id_cliente' => $id,
+            'historico' => 'Adoção atualizada'
+        ]);
+        return redirect()
+            ->route('cliente.show', ['id' => $cliente->id_cliente])
+            ->with('success', 'Cadastrado com sucesso');
+    }
+
+    public function destroy(string $id)
+    {
+        Cliente::find($id)->delete();
+        return redirect()->back()->with('destroy', ' Excluído com sucesso!');
     }
 
     /**
-     * Display the specified resource.
+     * 05-10-2023
+     * @author Thomas Melo
+     *
      */
-    public function show(Cliente $cliente)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Cliente $cliente)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Cliente $cliente)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Cliente $cliente)
-    {
-        //
-    }
 }

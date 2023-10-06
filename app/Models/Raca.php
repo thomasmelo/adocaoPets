@@ -29,7 +29,7 @@ class Raca extends Model
         'deleted_at',
     ];
 
-    protected $fillable = ['raca'];
+    protected $fillable = ['raca','id_especie'];
 
     /**
      * --------------------------------------------------

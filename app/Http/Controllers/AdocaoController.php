@@ -7,7 +7,7 @@
  */
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\{
     Adocao,
@@ -23,12 +23,9 @@ use App\Models\{
 };
 
 
-
 class AdocaoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $adocoes = Adocao::orderBy('id_adocao', 'asc')->paginate('20');
@@ -37,9 +34,7 @@ class AdocaoController extends Controller
             ->with(compact('adocoes', 'status'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
         $adocao = null;
@@ -50,26 +45,28 @@ class AdocaoController extends Controller
             ->with(compact('adocao', 'status', 'pets', 'clientes'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
-        //
+        $adocao = Adocao::create($request->all());
+        AdocaoHistorico::create([
+            'id_user' => Auth::user()->id,
+            'id_adocao' => $adocao->id_adocao,
+            'historico' => 'Adoção iniciada'
+        ]);
+        return redirect()
+            ->route('adocao.show', ['id' => $adocao->id_adocao])
+            ->with('success', 'Cadastrado com sucesso');
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(int $id)
     {
         $adocao = Adocao::find($id);
         return view('adocao.show')->with(compact('adocao'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(int $id)
     {
         $adocao = Adocao::find($id);
@@ -77,23 +74,28 @@ class AdocaoController extends Controller
         $pets = Pet::orderBy('nome')->get();
         $clientes = Cliente::orderBy('nome');
         return view('adocao.form')
-        ->with(compact('adocao', 'status', 'pets', 'clientes'));
+            ->with(compact('adocao', 'status', 'pets', 'clientes'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Adocao $adocao)
+
+    public function update(Request $request, int $id)
     {
-        //
+        $adocao = Adocao::find($id);
+        $adocao->update($request->all());
+        AdocaoHistorico::create([
+            'id_user' => Auth::user()->id,
+            'id_adocao' => $id,
+            'historico' => 'Adoção atualizada'
+        ]);
+        return redirect()
+            ->route('adocao.show', ['id' => $adocao->id_adocao])
+            ->with('success', 'Cadastrado com sucesso');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Adocao $adocao)
+    public function destroy(string $id)
     {
-        //
+        Adocao::find($id)->delete();
+        return redirect()->back()->with('destroy', ' Excluído com sucesso!');
     }
 
     /**
