@@ -57,7 +57,7 @@ Route::prefix('adocoes')
  * | 04-10-2023
  * --------------------------
  */
-Route::prefix('clientes')
+Route::prefix('pessoas')
     ->controller(ClienteController::class)
     ->middleware('auth')
     ->group(function () {

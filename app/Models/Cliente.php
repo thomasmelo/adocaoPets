@@ -97,7 +97,13 @@ class Cliente extends Model
      * | https://laravel.com/docs/10.x/eloquent-mutators
      * ---------------------------------------------------
      */
-
+    protected function cpf(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) =>preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $value),
+            set: fn ($value) => preg_replace('/\D/', '', $value),
+        );
+    }
 
 
     /**
@@ -106,6 +112,26 @@ class Cliente extends Model
      * -------------------------------
      */
 
+
+
+    public function enderecoCompleto()
+    {
+        $endereco  = '<i class="fa-solid fa-location-dot"></i> ';
+        $endereco.= $this->endereco . ' , Nº ' . $this->numero;
+        $endereco .= ', ' . $this->bairro . '<br> Cep: ' . $this->cep;
+        $endereco .= ' - ' . $this->cidade . ' / ' . $this->uf;
+        return $endereco;
+    }
+
+    public function contatos()
+    {
+        $contatos  = '';
+        if ($this->ddd)
+            $contatos .= '<i class="fa-solid fa-mobile-screen"></i> ' . $this->ddd . ' ' . $this->celular;
+       if ($this->email)
+            $contatos .= '<br><i class="fa-solid fa-envelope"></i> ' . $this->email;
+        return $contatos;
+    }
 
 
     /**
