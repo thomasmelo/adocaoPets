@@ -62,7 +62,7 @@
                     </div>
                     <div class="col-md-2">
                         <label class="form-label" for="nascimento">Nascimento*</label>
-                        <input class="form-control" type="date" id="nascimento" name="nascimento" value="{{ $cliente ? $cliente->nascimento :
+                        <input class="form-control" type="date" id="nascimento" name="nascimento" value="{{ $cliente ? $cliente->nascimento->format('Y-m-d') :
                             old('nascimento')
                         }}" required>
                     </div>

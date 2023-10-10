@@ -130,6 +130,9 @@ Route::prefix('animais')
             ->name('pet.update');
         Route::post('excluir/{id}', 'destroy')
             ->name('pet.destroy');
+
+        Route::get('/racas/{id_especie}', 'racas')
+            ->name('pet.racas');
     });
 
 /**

@@ -69,7 +69,7 @@
                 <th>Pessoa</th>
                 <th>Pet</th>
                 <th>Descrição</th>
-                <th>Atulização</th>
+                <th>Atualização</th>
             </tr>
         </thead>
         <tbody class="table-group-divider">

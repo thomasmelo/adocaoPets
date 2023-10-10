@@ -25,9 +25,16 @@ use App\Models\{
 
 class ClienteController extends Controller
 {
-    public function index()
+    public function index(Request $request, string $search = null)
     {
-        $clientes = Cliente::orderBy('id_cliente', 'asc')->paginate('20');
+        $search   = $request->search ?? null;
+        $clientes = Cliente::where(function ($query) use ($search) {
+            $query->where('nome', 'like', "%$search%");
+            $query->orwhere('cpf', 'like', "%$search%");
+            $query->orwhere('celular', 'like', "%$search%");
+            $query->orwhere('cidade', 'like', "%$search%");
+        })->orderBy('id_cliente', 'asc')
+            ->paginate('20');
         return view('cliente.index')
             ->with(compact('clientes'));
     }

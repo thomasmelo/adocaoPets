@@ -1,5 +1,33 @@
 @extends('layouts.base')
 @section('content')
+
+
+{{-- pesquisa --}}
+<form action="{{ route('cliente.index') }}" method="get" class="m-1 p-2 border rounded">
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <label for="form-label" id="search">Informe o nome do pessoa, cpf, celular ou cidade</label>
+            <input class="form-control" type="search" name="search" id="search"
+                placeholder="Digite o que deseja pesquisar..." value="{{ old('search',request()->get('search')) }}">
+        </div>
+        <div class="col-md-1">
+            <input class="btn btn-success mt-4" type="submit" value="Pesquisar">
+        </div>
+
+        @if(request()->get('search') !='')
+        <div class="col-md-2">
+            <a class="btn btn-primary mt-4" href="{{ route('cliente.index') }}">
+                <i class="fa-solid fa-broom"></i>
+                Limpar
+            </a>
+        </div>
+        @endif
+    </div>
+</form>
+{{-- /pesquisa --}}
+
+
+
 <h1 class="my-4">
     <i class="fa-solid fa-users"></i>
       Relação de Pessoas
@@ -14,7 +42,7 @@
 {{-- /alerts --}}
 
 {{-- paginação --}}
-{!! $clientes->links() !!}
+{!! $clientes->appends(['search'=>request()->get('search','')])->links() !!}
 {{-- /paginação --}}
 <div class="table-responsive mt-4">
     <table class="table table-striped  table-hover ">

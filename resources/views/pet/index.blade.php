@@ -1,11 +1,11 @@
 @extends('layouts.base')
 @section('content')
 <h1 class="my-4">
-    <i class="fa-solid fa-hand-holding-heart"></i>
-    - ADOÇÕES
+    <i class="fa-solid fa-paw"></i>
+    - Pets
     |
-    <a class="btn btn-primary" href="{{ route('adocao.create') }}">
-        Nova Adoção
+    <a class="btn btn-primary" href="{{ route('pet.create') }}">
+        Novo Pet
     </a>
 </h1>
 
@@ -14,30 +14,34 @@
 {{-- /alerts --}}
 
 {{-- pesquisa --}}
-
-<form action="{{ route('adocao.index') }}" method="get">
+<form action="{{ route('pet.index') }}" method="get" class="m-1 p-2 border rounded">
     <div class="row">
         <div class="col-md-4">
-            <label for="form-label" id="search">
-                &nbsp;</label>
+            <label for="form-label" id="search">Informe o nome do pet</label>
             <input class="form-control" type="search" name="search" id="search"
                 placeholder="Digite o que deseja pesquisar..." value="{{ old('search',request()->get('search')) }}">
         </div>
-        {{-- data inicial --}}
+
         <div class="col-md-3">
-            <label class="form-label" for="dt_inicio">
-                Data de inicio
-            </label>
-            <input class="form-control" type="date" name="dt_inicio" id="dt_inicio">
-        </div>
-        {{-- /data inicial --}}
-        <div class="col-md-3">
-            <label for="id_status" class="form-label">Status</label>
-            <select id="id_status" name="id_status" class="form-select">
+            <label for="id_raca" class="form-label">Raça</label>
+            <select id="id_raca" name="id_raca" class="form-select">
                 <option value="">Escolha...</option>
-                @foreach ($status::orderBy('status')->get() as $item )
-                <option value="{{$item->id_status}}">
-                    {{ $item->status}}
+                @foreach ($racas::get() as $item )
+                <option value="{{$item->id_raca}}"
+                    @selected(request()->get('id_raca') && request()->get('id_raca') == $item->id_raca)>
+                    {{ $item->raca}}
+                </option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="id_sexo" class="form-label">Sexo</label>
+            <select id="id_sexo" name="id_sexo" class="form-select">
+                <option value="">Escolha...</option>
+                @foreach ($sexos::get() as $item )
+                <option value="{{$item->id_sexo}}"
+                    @selected(request()->get('id_sexo') && request()->get('id_sexo') == $item->id_sexo)>
+                    {{ $item->sexo}}
                 </option>
                 @endforeach
             </select>
@@ -46,61 +50,77 @@
             <input class="btn btn-success mt-4" type="submit" value="Pesquisar">
         </div>
 
-        @if(request()->get('search') !='')
-        <a class="btn btn-primary col-md-1" href="{{ route('adocao.index') }}">
+        @if(
+            request()->get('search') !='' ||
+            request()->get('id_raca') !='' ||
+            request()->get('id_sexo') !=''
+        )
+        <div class="col-md-2">
+        <a class="btn btn-primary mt-4" href="{{ route('pet.index') }}">
+            <i class="fa-solid fa-broom"></i>
             Limpar
         </a>
+        </div>
         @endif
     </div>
 </form>
-
 {{-- /pesquisa --}}
-<h1>Relação de adoções</h1>
+<h1>Relação de Pets</h1>
 {{-- paginação --}}
-{!! $adocoes->appends(['search'=>request()->get('search','')])->links() !!}
+{!! $pets->appends([
+'search'=>request()->get('search',''),
+'id_raca'=>request()->get('id_raca',''),
+'id_sexo'=>request()->get('id_sexo',''),
+])->links() !!}
 {{-- /paginação --}}
 <div class="table-responsive mt-4">
     <table class="table table-striped  table-hover ">
         <thead>
             <tr>
                 <th>#</th>
-                <th>Status</th>
-                <th>Inicio</th>
-                <th>Pessoa</th>
-                <th>Pet</th>
+                <th>Cód.:</th>
+                <th>Raca/Espécie</th>
+                <th>Sexo</th>
+                <th>Nome</th>
                 <th>Descrição</th>
-                <th>Atulização</th>
+                <th>Atualização</th>
             </tr>
         </thead>
         <tbody class="table-group-divider">
-            @forelse ($adocoes as $adocao )
+            @forelse ($pets as $pet )
             <tr>
                 <td scope="row" class="col-2">
                     <div class="flex-column">
                         {{-- ver --}}
-                        <a class="btn btn-success" href="{{ route('adocao.show',['id'=>$adocao->id_adocao])}}">
+                        <a class="btn btn-success" href="{{ route('pet.show',['id'=>$pet->id_pet])}}">
                             <i class="fa-regular fa-eye"></i>
                         </a>
                         {{-- editar --}}
-                        <a class="btn btn-dark" href=" {{ route('adocao.edit',['id'=>$adocao->id_adocao])}}">
+                        <a class="btn btn-dark" href=" {{ route('pet.edit',['id'=>$pet->id_pet])}}">
                             <i class="bi bi-pencil-square"></i>
                         </a>
                         {{-- excluir --}}
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                             data-bs-target="#modalExcluir"
-                            data-identificacao="Código:{{ $adocao->id_adocao}} | Nome:{{ $adocao->pet->nome}}"
-                            data-url="{{ route('adocao.destroy',['id'=>$adocao->id_adocao])}}">
+                            data-identificacao="Código:{{ $pet->id_pet}} | Nome:{{ $pet->nome}}"
+                            data-url="{{ route('pet.destroy',['id'=>$pet->id_pet])}}">
                             <i class="bi bi-trash"></i>
                         </button>
                     </div>
                 </td>
-                <td>{{ $adocao->status->status }}</td>
-                <td>{{ $adocao->dt_inicio->format('d/m/Y') }}</td>
-                <td>{{ $adocao->cliente->nome }}</td>
-                <td>{{ $adocao->pet->nome }}</td>
-                <td>{{ $adocao->descricao }}</td>
                 <td>
-                    {{ $adocao->updated_at->format('d/m/Y \a\s H:i') }}h
+                    {{ $pet->id_pet }}
+                </td>
+                <td>
+                    {{ $pet->raca->raca }}
+                    /
+                    {{ $pet->raca->especie->especie }}
+                </td>
+                <td>{{ $pet->sexo->sexo }}</td>
+                <td>{{ $pet->nome }}</td>
+                <td>{{ $pet->descricao }}</td>
+                <td>
+                    {{ $pet->updated_at->format('d/m/Y \a\s H:i') }}h
                 </td>
             </tr>
             @empty

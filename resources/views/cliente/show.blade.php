@@ -17,6 +17,7 @@
 </div>
 {{-- CONTATOS / ENDEREÇO --}}
 <div class="row row-cols-1 row-cols-md-3 g-4">
+
     <div class="col">
         <div class="card border-dark mt-1">
             <div class="card-header">
@@ -28,7 +29,8 @@
             <div class="card-body">
                 <p>
                     <strong>Nome:</strong> {{ $cliente->nome }} / {{ $cliente->sexo->sexo }}<br>
-                    <strong>Nascimento:</strong> {{ $cliente->nascimento->format('d/m/Y') }} - {{ $cliente->nascimento->age }} anos<br>
+                    <strong>Nascimento:</strong> {{ $cliente->nascimento->format('d/m/Y') }} - {{
+                    $cliente->nascimento->age }} anos<br>
                     <strong>CPF:</strong> {{ $cliente->cpf }}
                 </p>
             </div>
@@ -63,15 +65,77 @@
             </div>
             <div class="card-body">
                 <p>
-                    {!!  $cliente->enderecoCompleto() !!}
+                    {!! $cliente->enderecoCompleto() !!}
                 </p>
             </div>
         </div>
     </div>
-
-
 </div>
 {{-- /CONTATOS --}}
+
+{{-- ADOÇÕES --}}
+<div class="row mt-4">
+
+    <h3>
+        <i class="fa-solid fa-hand-holding-heart"></i>
+        Adoções da pessoa
+        -
+        <a class="btn btn-primary" href="#">
+            Nova Adoção
+        </a>
+    </h3>
+    <div class="table-responsive mt-4">
+        <table class="table table-striped  table-hover ">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Código</th>
+                    <th>Raça/ Especie</th>
+                    <th>Nome</th>
+                    <th>Observações</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                @forelse ($cliente->adocao()->get() as $adocao )
+                <tr>
+                    <td scope="row" class="col-2">
+                        <div class="flex-column">
+                            {{-- ver --}}
+                            <a class="btn btn-success" href="{{ route('adocao.show',['id'=>$adocao->id_adocao])}}">
+                                <i class="fa-regular fa-eye"></i>
+                            </a>
+                            {{-- editar --}}
+                            <a class="btn btn-dark" href=" {{ route('adocao.edit',['id'=>$adocao->id_adocao])}}">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <b>Cod.: {{ $adocao->id_adocao}}</b>
+                    </td>
+                    <td>
+                        {{ $adocao->pet->raca->raca }}
+                        /
+                        {{ $adocao->pet->raca->especie->especie }}
+
+                    </td>
+                    <td>
+                        {{ $adocao->pet->nome }}
+                    </td>
+                    <td>{{ $adocao->observacao}}</td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="8">
+                        Nenhuma registro retornado
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
+{{-- /ADOÇÕES --}}
 
 @endsection
 @section('scripts')

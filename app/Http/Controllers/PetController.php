@@ -25,11 +25,34 @@ use App\Models\{
 
 class PetController extends Controller
 {
-    public function index()
+    public function index(Request $request, string $search = null, int $id_raca = null, int $id_sexo = null)
     {
-        $pets = Pet::orderBy('id_pet', 'asc')->paginate('20');
-        return view('pet.index')
-            ->with(compact('pets'));
+        $search   = $request->search ?? null;
+        $id_raca  = $request->id_raca ?? null;
+        $id_sexo  = $request->id_sexo ?? null;
+        $pets = Pet::where(function ($query) use ($search, $id_raca, $id_sexo) {
+            if ($search) {
+                $query->where('nome', 'like', "%$search%");
+            }
+            if($id_raca) {
+                $query->where('id_raca', $id_raca);
+            }
+            if ($id_sexo) {
+                $query->where('id_sexo', $id_sexo);
+            }
+        })->orderBy('id_pet', 'asc')->paginate('20');
+
+        $racas = Raca::orderBy('raca');
+        $especies = Especie::class;
+        $racas = Raca::class;
+        $sexos = Sexo::class;
+
+        return view('pet.index')->with(compact(
+            'pets',
+            'especies',
+            'racas',
+            'sexos'
+        ));
     }
 
 
@@ -65,7 +88,7 @@ class PetController extends Controller
 
     public function show(int $id)
     {
-        $pet =Pet::find($id);
+        $pet = Pet::find($id);
         return view('pet.show')->with(compact('pet'));
     }
 
@@ -88,7 +111,7 @@ class PetController extends Controller
 
     public function update(Request $request, int $id)
     {
-        $pet =Pet::find($id);
+        $pet = Pet::find($id);
         $pet->update($request->all());
         PetHistorico::create([
             'id_user' => Auth::user()->id,
@@ -102,8 +125,25 @@ class PetController extends Controller
 
     public function destroy(string $id)
     {
-       Pet::find($id)->delete();
+        Pet::find($id)->delete();
         return redirect()->back()->with('destroy', ' Excluído com sucesso!');
+    }
+
+
+    /**
+     * Exibição de raças de acordo com a especie
+     * 09-10-2023
+     * @param  int $id_especie
+     * @return json
+     */
+    public function racas(Request $request)
+    {
+        $resposta =  Raca::where('id_especie', $request->id_especie)->select('*')->orderBy('raca')->get();
+        if ($resposta->count() > 0) {
+            echo json_encode($resposta);
+        } else {
+            echo json_encode('');
+        }
     }
 
     /**
