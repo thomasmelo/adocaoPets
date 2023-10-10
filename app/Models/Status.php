@@ -29,6 +29,13 @@ class Status extends Model
 
     protected $fillable = ['status'];
 
+    // CONSTANTES
+    const INICIADO      = 1;
+    const APROVADO      = 2;
+    const FINALIZADO    = 3;
+    const CANCELADO     = 4;
+    const DEVOLVIDO     = 5;
+
     /**
      * --------------------------------------------------
      * | Relacionamentos

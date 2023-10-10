@@ -1,51 +1,33 @@
 @extends('layouts.base')
 @section('content')
 <h1 class="mx-3 my-4">
-    <i class="fa-solid fa-hand-holding-heart"></i>
-    Adoção Nº {{ $adocao->id_adocao}}
+    <i class="fa-solid fa-paw"></i>
+    Pet Nº {{ $pet->id_pet}}
+    -
+    <a class="btn btn-dark" href=" {{ route('pet.edit',['id'=>$pet->id_pet])}}">
+        <i class="bi bi-pencil-square"></i>
+    </a>
 </h1>
 <div class="row">
-    <p>
-        Status: {{ $adocao->status->status }} -
-        Inicio: {{ $adocao->dt_inicio->format('d/m/Y') }}
-    </p>
-    <p>
-        <i class="fa-solid fa-paw"></i>
-        {{ $adocao->pet->nome }}<br>
+    <p class="fs-5">
+        Nome: {{ $pet->nome }}<br>
         <i class="fa-solid fa-feather-pointed"></i>
-        {!! $adocao->pet->raca->raca !!} -
+        {!! $pet->raca->raca !!} -
         <i class="fa-solid fa-seedling"></i>
-        {!! $adocao->pet->raca->especie->especie !!}
-    </p>
-    <p>
-        <i class="fa-solid fa-user"></i>
-        {{ $adocao->cliente->nome }}<br>
-        Sexo: {{ $adocao->cliente->sexo->sexo }}
-        @if($adocao->cliente->nascimento)
-           <i class="fa-solid fa-cake-candles"></i>
-            Nascimento: {{ $adocao->cliente->nascimento->format('d/m/Y') }}
-            ( {{ $adocao->cliente->nascimento->age }} anos)
-        @endif
-        <br><br>
-        <i class="fa-solid fa-location-dot"></i>
-        {{ $adocao->cliente->endereco }}, Nº {{ $adocao->cliente->numero }} {{ $adocao->cliente->complemento }}<br>
-        {{ $adocao->cliente->bairro }}<br>
-        {{ $adocao->cliente->cep }} - {{ $adocao->cliente->cidade }} / {{ $adocao->cliente->uf }}<br><br>
-
-        <i class="fa-solid fa-mobile-screen-button"></i>
-        ( {{ $adocao->cliente->ddd }} ) {{ $adocao->cliente->celular }}<br>
-        <i class="fa-regular fa-envelope"></i>
-        <a href="mailto:{{ $adocao->cliente->email }}">
-            {{ $adocao->cliente->email }}
-        </a>
+        {!! $pet->raca->especie->especie !!}
     </p>
 </div>
-<div class="row">
+<div class="row mt-2">
     <h2>Descrição</h2>
+    {!! $pet->descricao !!}
+</div>
+<div class="row mt-2">
+    <h2>Observações</h2>
+    {!! $pet->observacao !!}
 </div>
 
-<div class="row">
-    <h2>Histórico da adoção</h2>
+<div class="row mt-4">
+    <h2>Histórico do Pet</h2>
     <div class="table-responsive">
         <table class="table table-striped  table-hover ">
             <thead>
@@ -57,7 +39,7 @@
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-                @forelse ($adocao->historico() as $h )
+                @forelse ($pet->historico() as $h )
                 <tr>
                     <td scope="row" class="col-1">
 

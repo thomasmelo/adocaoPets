@@ -36,14 +36,14 @@ Route::prefix('adocoes')
     ->group(function () {
         Route::get('/', 'index')
             ->name('adocao.index');
-        Route::get('/novo', 'create')
+        Route::get('/novo/{id_cliente?}', 'create')
             ->name('adocao.create');
         Route::get('/editar/{id}', 'edit')
             ->name('adocao.edit');
         Route::get('exibir/{id}', 'show')
             ->name('adocao.show');
 
-        Route::post('cadastrar', 'store')
+        Route::post('cadastrar/{id_cliente}', 'store')
             ->name('adocao.store');
         Route::post('atualizar/{id}', 'update')
             ->name('adocao.update');

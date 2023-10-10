@@ -2,7 +2,10 @@
 @section('content')
 <h1 class="mx-3 my-4">
     <i class="fa-solid fa-hand-holding-heart"></i>
-    Adoção Nº {{ $adocao->id_adocao}}
+    Adoção Nº {{ $adocao->id_adocao}} - <a class="btn btn-dark"
+    href="{{ route('adocao.edit',['id'=>$adocao->id_adocao])}}">
+    <i class="bi bi-pencil-square"></i>
+    </a>
 </h1>
 <div class="row">
     <p>
@@ -50,20 +53,20 @@
         <table class="table table-striped  table-hover ">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Data</th>
-                    <th>Usuário</th>
+                    <th class="col-1">#</th>
+                    <th class="col-2">Usuário</th>
+                    <th class="col-2">Data</th>
                     <th>Histórico</th>
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-                @forelse ($adocao->historico() as $h )
+                @forelse ($adocao->historico()->get() as $h )
                 <tr>
-                    <td scope="row" class="col-1">
-
+                    <td>
+                        {{ $loop->iteration }}
                     </td>
-                    <td>{{ $h->created_at->format('d/m/Y \a\s H:i') }}h</td>
                     <td>{{ $h->usuario->name }}</td>
+                    <td>{{ $h->created_at->format('d/m/Y \a\s H:i') }}h</td>
                     <td>{{ $h->historico }}</td>
                 </tr>
                 @empty

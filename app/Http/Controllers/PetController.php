@@ -42,7 +42,6 @@ class PetController extends Controller
             }
         })->orderBy('id_pet', 'asc')->paginate('20');
 
-        $racas = Raca::orderBy('raca');
         $especies = Especie::class;
         $racas = Raca::class;
         $sexos = Sexo::class;
@@ -116,10 +115,10 @@ class PetController extends Controller
         PetHistorico::create([
             'id_user' => Auth::user()->id,
             'id_pet' => $id,
-            'historico' => 'Adoção atualizada'
+            'historico' => 'Dados atualizado'
         ]);
         return redirect()
-            ->route('pet.show', ['id' => $pet->id_pet])
+            ->route('pet.show', ['id' => $id])
             ->with('success', 'Cadastrado com sucesso');
     }
 

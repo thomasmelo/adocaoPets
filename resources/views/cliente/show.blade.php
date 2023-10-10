@@ -3,7 +3,7 @@
 <div class="card-deck">
     <div class="card border-dark mt-1">
         <div class="card-header">
-            <H3 class="mx-3 my-4">
+            <h3 class="mx-3 my-4">
                 <i class="fa-solid fa-users"></i>
                 Cod.: {{ $cliente->id_cliente }} -
                 <a class="btn btn-dark" href=" {{ route('cliente.edit',['id'=>$cliente->id_cliente])}}">
@@ -11,7 +11,7 @@
                 </a>
 
                 {{ $cliente->nome }}
-            </H3>
+            </h3>
         </div>
     </div>
 </div>
@@ -49,7 +49,8 @@
                     <i class="fa-solid fa-mobile-screen"></i>
                     ({{ $cliente->ddd }}) {{ $cliente->celular }} <br>
                     <i class="fa-solid fa-envelope"></i>
-                    {{ $cliente->email }}
+                    {{ $cliente->email }}<br>
+                    .
 
                 </p>
             </div>
@@ -65,7 +66,7 @@
             </div>
             <div class="card-body">
                 <p>
-                    {!! $cliente->enderecoCompleto() !!}
+                    {!! $cliente->enderecoCompleto() !!}<br>.
                 </p>
             </div>
         </div>
@@ -80,7 +81,7 @@
         <i class="fa-solid fa-hand-holding-heart"></i>
         Adoções da pessoa
         -
-        <a class="btn btn-primary" href="#">
+        <a class="btn btn-primary" href="{{ route('adocao.create', ['id_cliente'=>$cliente->id_cliente]) }}">
             Nova Adoção
         </a>
     </h3>
