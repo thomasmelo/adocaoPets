@@ -57,6 +57,12 @@
         </div>
 
         <div class="col-md-12">
+            <label class="form-label" for="descricao">Nome*</label>
+           <input class="form-control" type="text" name="nome" id="nome"
+           value="{{ $pet ? $pet->nome : old('nome') }}" required>
+        </div>
+
+        <div class="col-md-12">
             <label class="form-label" for="descricao">Descrição</label>
             <textarea class="form-control" name="descricao" id="descricao" cols="30" rows="5">{{ $pet ? $pet->descricao : old('descricao') }}</textarea>
         </div>

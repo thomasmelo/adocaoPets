@@ -81,7 +81,7 @@
             <tbody class="table-group-divider">
                 @forelse ($adocoes as $adocao)
                     <tr>
-                        <td scope="row" class="col-2">
+                        <td scope="row" class="col-1">
                             <div class="flex-column">
                                 {{-- ver --}}
                                 <a class="btn btn-success" href="{{ route('adocao.show', ['id' => $adocao->id_adocao]) }}">
@@ -92,12 +92,12 @@
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
                                 {{-- excluir --}}
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                {{-- <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                     data-bs-target="#modalExcluir"
                                     data-identificacao="Código:{{ $adocao->id_adocao }} | Nome:{{ $adocao->pet->nome }}"
                                     data-url="{{ route('adocao.destroy', ['id' => $adocao->id_adocao]) }}">
                                     <i class="bi bi-trash"></i>
-                                </button>
+                                </button> --}}
                             </div>
                         </td>
                         <td>{{ $adocao->id_adocao }}</td>
